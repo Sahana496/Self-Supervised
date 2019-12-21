@@ -56,7 +56,7 @@ class Trainer():
         accuracy = torch.mean(pred_ind.eq(y.view_as(pred_ind)).cpu().float())
         return accuracy
 
-    def _dicriminator_train_iteration(self, data, generated_data, batch_size):
+    def _discriminator_train_iteration(self, data, generated_data, batch_size):
         """ """
         # Calculate probabilities on real and generated data
         data = Variable(data)
@@ -154,7 +154,7 @@ class Trainer():
             data = torch.cat((x,x_90,x_180,x_270),0)
 
             self.num_steps += 1
-            self._disciminator_train_iteration(data, generated_data, batch_size)
+            self._discriminator_train_iteration(data, generated_data, batch_size)
             # Only update generator every |critic_iterations| iterations
             if self.num_steps % self.critic_iterations == 0:
                 self._generator_train_iteration(generated_data, batch_size)

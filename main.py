@@ -12,7 +12,7 @@
 import torch
 import torch.optim as optim
 from dataloaders import get_STL10_dataloaders
-from model import Generator, Discriminator
+from model_new import Generator, Discriminator
 from training import Trainer
 import random
 import sys
@@ -34,15 +34,11 @@ discriminator = Discriminator(channel = 3, ssup = True)
 G_optimizer = optim.Adam(generator.parameters(), lr=g_lr, betas=betas)
 D_optimizer = optim.Adam(discriminator.parameters(), lr=d_lr, betas=betas)
 
-summary(discriminator,(3,48,48))
+
 # Train model
 epochs = 200
 trainer = Trainer(generator, discriminator, G_optimizer, D_optimizer,
                   weight_rotation_loss_d = 1.0, weight_rotation_loss_g = 0.2, critic_iterations=1,
                   use_cuda=torch.cuda.is_available())
-#trainer.train(data_loader, epochs, save_training_gif=True)
-print(discriminator)
-# Save models
-name = 'stl10_model'
-torch.save(trainer.G.state_dict(), './gen_' + name + '.pt')
-torch.save(trainer.D.state_dict(), './dis_' + name + '.pt')
+trainer.train(data_loader, epochs, save_training_gif=True)
+

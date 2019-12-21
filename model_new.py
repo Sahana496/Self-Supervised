@@ -79,7 +79,7 @@ class Generator(nn.Module):
         self.tanh = nn.Tanh()
 
         self.conv_res4 = snconv2d(64,channel, padding = 1, kernel_size = 3, stride = 1)
-        self.self_attn = Self_Attn(in_channels = 256)
+        self.self_attn = Self_Attn(in_channels = 128)
 
         self.re1 = Residual_G(512, 256, up_sampling = True)
         self.re2 = Residual_G(256, 128, up_sampling = True)
