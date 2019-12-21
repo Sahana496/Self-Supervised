@@ -43,7 +43,7 @@ import numpy as np
 import torch
 from scipy import linalg
 from torch.nn.functional import adaptive_avg_pool2d
-from model import Generator
+from model_new import Generator
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
 
@@ -234,7 +234,7 @@ if __name__ == '__main__':
 
     train_data = datasets.STL10('../stl10_data', split='unlabeled', download=False, transform=all_transforms)
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
-    generator = Generator(resnet = True, z_size = 128, channel = 3, output_size=48)
+    generator = Generator(z_size = 128, channel = 3, output_size=48)
 
     for checkpoint_file in model_checkpoints:
         checkpoint = torch.load(checkpoint_file)    
