@@ -79,7 +79,7 @@ class Generator(nn.Module):
         self.tanh = nn.Tanh()
 
         self.conv_res4 = snconv2d(64,channel, padding = 1, kernel_size = 3, stride = 1)
-        self.self_attn = Self_Attn(in_channels = 128)
+        self.self_attn = Self_Attn(in_channels = 256)
 
         self.re1 = Residual_G(512, 256, up_sampling = True)
         self.re2 = Residual_G(256, 128, up_sampling = True)
@@ -90,12 +90,13 @@ class Generator(nn.Module):
     def forward(self, x):
         d1 = self.fully_connect(x)
         d1 = d1.view(-1, 512, self.s, self.s)
-        d2 = self.re1(d1)            #12x12
-        d3 = self.re2(d2)            #24x24
-        d4 = self.self_attn(d3)      #24x24
-        d4 = self.re3(d4)            #48x48
-        d4 = self.relu(self.bn(d4))  #48x48
-        d5 = self.conv_res4(d4)      #48x48
+        d2 = self.re1(d1) #12x12
+        d3 = self.self_attn(d2) #24x24
+        d4 = self.re2(d3) #24x24
+        
+        d4 = self.re3(d4) #48x48
+        d4 = self.relu(self.bn(d4))
+        d5 = self.conv_res4(d4) #48x48
         return self.tanh(d5)
 
     def sample_latent(self, num_samples):
